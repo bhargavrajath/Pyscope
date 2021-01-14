@@ -6,7 +6,7 @@ import serial as serl
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation as fanim
 
-port = serl.Serial(port='/dev/ttyACM0',baudrate=115200,timeout=0.1)
+port = serl.Serial(port='/dev/ttyACM0',baudrate=115200,timeout=0.1)     # change port name as needed. Baudrate needs to match the TX baud of sampling device
 
 y = []		# list to hold values
 
