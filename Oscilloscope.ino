@@ -1,5 +1,5 @@
 #define ref_volt 3.3  // MCU ADC reference voltage
-#define ADC_res 10    // ADC resolution in bits
+#define ADC_res 1024    // ADC resolution in 2^bits
 #define ch1 A3        // pin used for analog measurement
 
 void setup() {
