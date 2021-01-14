@@ -1,5 +1,5 @@
-# This code reads the serial data from a USB port and plots it in real-time (almost)
-# The Acquisition device may send additional channels of data, which needs to be parsed in the 'animate' function/method
+# This python script reads the serial data from a USB port and plots it in real-time (almost)
+# The acquisition device may send additional channels of data, which needs to be parsed in the 'animate' function/method
 # Author: Rajath Bhargav
 
 import serial as serl
