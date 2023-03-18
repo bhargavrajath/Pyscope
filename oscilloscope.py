@@ -1,28 +1,25 @@
-# This python script reads the serial data from a USB port and plots it in real-time (almost)
-# The acquisition device may send additional channels of data, which needs to be parsed in the 'animate' function/method
-# Author: Rajath Bhargav
+import sounddevice as sd
+import numpy as np
+from matplotlib import pyplot as plt
 
-import serial as serl
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation as fanim
+length = 1 # seconds
+fs = 44100
+samples = length * fs
 
-port = serl.Serial(port='/dev/ttyACM0',baudrate=115200,timeout=0.1)     # change port name as needed. Baudrate needs to match the TX baud of sampling device
+sd.default.samplerate = fs
+sd.default.channels = 1
 
-y = []		# list to hold values
+data = sd.rec(samples) # numpy array output
 
-fig = plt.figure()	# create a figure object
+sd.wait()
 
-def animate(i):
-    port.reset_input_buffer()       # clear buffer to get recent value. Some data is lost but plotting is real time
-    while not port.inWaiting():
-        pass                        # wait till the next byte is recieved
-    data = port.readline()
-    s = data.decode('UTF-8')
-    y.append(float(s[0:4]))
-    if len(y)>50:		            # if list grows above 50, remove the oldest value (index 0)
-        y.pop(0)                    # this keeps the list from growing and slowing down the re-plotting process
-    plt.clf()
-    plt.plot(y)
-    
-ani = fanim(fig,animate,interval=1) # animation method from matplotlib calls animate function repititively on figure supplied
+data = data/np.max(data)
+
+f = np.linspace(0,fs*length,int(fs/length))
+
+spectrum = np.fft.fft(data)
+
+plt.semilogx(f,spectrum)
+plt.grid(True)
+plt.xlabel('Frequency (Hz)')
 plt.show()
